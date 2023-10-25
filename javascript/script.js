@@ -22,15 +22,15 @@ const barajajugador=[];
 
 
 const darcartas=()=>{
-let jugador=document.createDocumentFragment();
-let maquina=document.createDocumentFragment();
 
 for (let i = 0; i < 7; i++) {
     let random=Math.floor(Math.random()*cartas.length)
     let carta=document.createElement("IMG")
     carta.src="./assets/imagenes/"+cartas[random]+ ".PNG"
-    jugador.appendChild(carta)
-    barajajugador.push(cartas[random])
+    carta.classList.add("cartas")
+    //Probar solo con array
+    /* jugador.appendChild(carta) */
+    barajajugador.push(carta)
     cartas.splice(random,1)
 }
 for (let i = 0; i < 7; i++) {
@@ -38,21 +38,27 @@ for (let i = 0; i < 7; i++) {
     let random=Math.floor(Math.random()*cartas.length)
     let carta=document.createElement("IMG")
     carta.src="./assets/imagenes/cartaUNO.PNG"
-    maquina.appendChild(carta)
+    carta.classList.add("cartas")
+
+    cartasmaquina.appendChild(carta)
     barajamaquina.push(cartas[random])
     cartas.splice(random,1)
 }
+
 cartasmaquina.style.display="flex"
 cartasjugador.style.display="flex"
 tablero.style.display="flex"
 
-cartasjugador.appendChild(jugador)
-cartasmaquina.appendChild(maquina)
+
+barajajugador.forEach(carta=> {
+    cartasjugador.appendChild(carta)
+    
+});
 
 
+console.log(barajamaquina)
 
 
-console.log(barajamaquina);
 }
 
 
@@ -101,27 +107,42 @@ darcartas();
 //logica del juego
 
 const turnoJugador=(event)=>{
+
 if (event.target.nodeName== "IMG") {   
 let valorcarta= event.target.src.substring(38,event.target.src.lastIndexOf("."));
+console.log(valorcarta)
+
 
 let carta = document.createElement("IMG");
-
 carta.src="./assets/imagenes/"+valorcarta+".PNG";
+carta.classList.add("cartas","posicioncartas")
+
 
 if (barajajugador.length==7) {
 
    apoyacartas.appendChild(carta)
-
-
-for (let i = 0; i < barajajugador.length; i++) {
-    if (barajajugador[i]==valorcarta) {
-        barajajugador.splice(i,1);
-        cartasjugador.children.splice(i,1)
-
+   /* console.log(barajajugador) */
+ let imageneliminar;
+   barajajugador.forEach(x => {
+    if (x.src == carta.src) {
+        imageneliminar=x
     }
-    
-}
-console.log(barajajugador)
+   })
+   
+   barajajugador.splice(barajajugador.lastIndexOf(imageneliminar),1);
+   console.log(barajajugador)
+
+  
+  
+   cartasjugador.innerHTML="";
+  
+    barajajugador.forEach(carta => {
+        cartasjugador.append(carta)
+    });
+
+
+
+
 
 
     

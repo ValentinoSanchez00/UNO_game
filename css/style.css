@@ -58,6 +58,14 @@
     justify-content: center;
     align-items: center;
 }
+.posicioncartas{
+    width: auto;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+
+
 .mazo{
     position: absolute;
     top: 1;
@@ -74,3 +82,4 @@
     height: 200px;
     position: relative;
 }
+
