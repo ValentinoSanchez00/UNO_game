@@ -6,7 +6,7 @@ const tablero=document.getElementById("tablero")
 const colores=["rojo","amarillo","verde","azul"];
 const numeros=["1","2","3","4","5","6","7","8","9","0","+2","cambiosentido","prohibido","cambiocolor","+4"];
 const cartas=[];
-
+const barajamaquina=[];
 const darcartas=()=>{
 let jugador=document.createDocumentFragment();
 let maquina=document.createDocumentFragment();
@@ -15,18 +15,16 @@ for (let i = 0; i < 7; i++) {
     let random=Math.floor(Math.random()*cartas.length)
     let carta=document.createElement("IMG")
     carta.src="./assets/imagenes/"+cartas[random]+ ".PNG"
-   /*  carta.classList.addClass="cartas" */
     jugador.appendChild(carta)
     cartas[random].remove
-
-
 }
 for (let i = 0; i < 7; i++) {
 
     let random=Math.floor(Math.random()*cartas.length)
     let carta=document.createElement("IMG")
-    carta.src="./assets/imagenes/"+cartas[random]+ ".PNG"
+    carta.src="./assets/imagenes/cartaUNO.PNG"
     maquina.appendChild(carta)
+    barajamaquina.push(cartas[random])
     cartas[random].remove
 }
 cartasmaquina.style.display="flex"
@@ -36,6 +34,10 @@ tablero.style.display="flex"
 cartasjugador.appendChild(jugador)
 cartasmaquina.appendChild(maquina)
 
+
+
+
+console.log(barajamaquina);
 }
 
 
