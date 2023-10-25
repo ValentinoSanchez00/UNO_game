@@ -2,11 +2,25 @@ const boton=document.getElementById("boton");
 const cartasmaquina=document.getElementById("cartasmaquina")
 const cartasjugador=document.getElementById("cartasjugador")
 const tablero=document.getElementById("tablero")
+const apoyacartas=document.getElementById("apoyacartas")
 
 const colores=["rojo","amarillo","verde","azul"];
 const numeros=["1","2","3","4","5","6","7","8","9","0","+2","cambiosentido","prohibido","cambiocolor","+4"];
 const cartas=[];
+
+
+
+
+
 const barajamaquina=[];
+const barajajugador=[];
+
+
+
+
+
+
+
 const darcartas=()=>{
 let jugador=document.createDocumentFragment();
 let maquina=document.createDocumentFragment();
@@ -16,7 +30,8 @@ for (let i = 0; i < 7; i++) {
     let carta=document.createElement("IMG")
     carta.src="./assets/imagenes/"+cartas[random]+ ".PNG"
     jugador.appendChild(carta)
-    cartas[random].remove
+    barajajugador.push(cartas[random])
+    cartas.splice(random,1)
 }
 for (let i = 0; i < 7; i++) {
 
@@ -25,7 +40,7 @@ for (let i = 0; i < 7; i++) {
     carta.src="./assets/imagenes/cartaUNO.PNG"
     maquina.appendChild(carta)
     barajamaquina.push(cartas[random])
-    cartas[random].remove
+    cartas.splice(random,1)
 }
 cartasmaquina.style.display="flex"
 cartasjugador.style.display="flex"
@@ -67,7 +82,7 @@ const generarmazo=()=>{
     });
 
     barajearmazo()
-    console.log(cartas)
+   
 
 }
 
@@ -81,4 +96,46 @@ darcartas();
 
 
 }
+
+
+//logica del juego
+
+const turnoJugador=(event)=>{
+if (event.target.nodeName== "IMG") {   
+let valorcarta= event.target.src.substring(38,event.target.src.lastIndexOf("."));
+
+let carta = document.createElement("IMG");
+
+carta.src="./assets/imagenes/"+valorcarta+".PNG";
+
+if (barajajugador.length==7) {
+
+   apoyacartas.appendChild(carta)
+
+
+for (let i = 0; i < barajajugador.length; i++) {
+    if (barajajugador[i]==valorcarta) {
+        barajajugador.splice(i,1);
+        cartasjugador.children.splice(i,1)
+
+    }
+    
+}
+console.log(barajajugador)
+
+
+    
+}
+
+
+
+
+
+
+}
+}
+
+
+
 boton.addEventListener("click",iniciarJuego);
+cartasjugador.addEventListener("click",turnoJugador) 
