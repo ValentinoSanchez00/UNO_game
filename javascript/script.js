@@ -106,6 +106,52 @@ darcartas();
 
 //logica del juego
 
+
+
+
+const turnomaquina=()=>{
+console.log(apoyacartas.children)
+const cartamedio=apoyacartas.lastChild.src;
+const valorcarta=cartamedio.substring(38,cartamedio.lastIndexOf("."))
+
+
+let  color="";
+let numero="";
+
+for (let i = 0; i < valorcarta.length; i++) {
+    if (i === 0 && valorcarta[i] === "+" && !isNaN(valorcarta[i + 1])) {
+        numero = "+" + valorcarta[i + 1];
+        color=valorcarta.substring(i + 2);
+        i++;
+    } else if (!isNaN(valorcarta[i])) {
+        numero = valorcarta[i];
+        color = valorcarta.substring(i + 1);
+        break; 
+    } else if (valorcarta.substring(i, i + 11) === "cambiocolor") {
+        numero = "cambiocolor";
+        color = "";
+        break;
+    } else if (valorcarta.substring(i, i + 13) === "cambiosentido") {
+        numero = "cambiodesentido";
+        color = valorcarta.substring(i + 13);
+        break;
+    }else if (valorcarta.substring(i, i + 9) === "prohibido") {
+        numero = "prohibido";
+        color = valorcarta.substring(i + 9);
+        break;
+    }
+}
+
+
+console.log(color)
+console.log(numero)   
+
+
+
+    
+}
+
+
 const turnoJugador=(event)=>{
 
 if (event.target.nodeName== "IMG") {   
@@ -121,7 +167,7 @@ carta.classList.add("cartas","posicioncartas")
 if (barajajugador.length==7) {
 
    apoyacartas.appendChild(carta)
-   /* console.log(barajajugador) */
+  
  let imageneliminar;
    barajajugador.forEach(x => {
     if (x.src == carta.src) {
@@ -130,7 +176,7 @@ if (barajajugador.length==7) {
    })
    
    barajajugador.splice(barajajugador.lastIndexOf(imageneliminar),1);
-   console.log(barajajugador)
+   
 
   
   
@@ -139,11 +185,6 @@ if (barajajugador.length==7) {
     barajajugador.forEach(carta => {
         cartasjugador.append(carta)
     });
-
-
-
-
-
 
     
 }
@@ -154,7 +195,12 @@ if (barajajugador.length==7) {
 
 
 }
+turnomaquina();
+
 }
+
+
+
 
 
 
