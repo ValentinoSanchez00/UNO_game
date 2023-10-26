@@ -56,7 +56,7 @@ barajajugador.forEach(carta=> {
 });
 
 
-console.log(barajamaquina)
+
 
 
 }
@@ -104,17 +104,16 @@ darcartas();
 }
 
 
-//logica del juego
 
 
 
 
 const turnomaquina=()=>{
-console.log(apoyacartas.children)
+
 const cartamedio=apoyacartas.lastChild.src;
 const valorcarta=cartamedio.substring(38,cartamedio.lastIndexOf("."))
 
-
+//saber los valores del medio
 let  color="";
 let numero="";
 
@@ -143,8 +142,50 @@ for (let i = 0; i < valorcarta.length; i++) {
 }
 
 
-console.log(color)
-console.log(numero)   
+
+
+// la maquina esta viendo que posibilidades puede hacer con la carta del medio
+let posibilidades=[];
+ for (let i = 0; i < barajamaquina.length; i++) {
+   if (barajamaquina[i].includes(numero) || barajamaquina[i].includes(color)|| barajamaquina[i].includes("+4")|| barajamaquina[i].includes("cambiocolor")) {
+    posibilidades.push(barajamaquina[i])
+   }
+   }
+
+
+
+
+let random=Math.floor(Math.random()*posibilidades.length)
+
+let carta = document.createElement("IMG");
+carta.src="./assets/imagenes/"+posibilidades[random]+".PNG";
+carta.classList.add("cartas","posicioncartas")
+
+apoyacartas.appendChild(carta)
+  
+let imageneliminar;
+  barajamaquina.forEach(x => {
+   if (x.src == carta.src) {
+       imageneliminar=x
+   }
+  })
+  
+  console.log(barajamaquina)
+  barajamaquina.splice(barajamaquina.lastIndexOf(imageneliminar),1);
+  console.log(barajamaquina)
+
+  let cartavuelta = document.createElement("IMG");
+  cartavuelta.src="./assets/imagenes/cartaUNO.PNG"
+  cartavuelta.classList.add("cartas")
+ 
+  cartasmaquina.innerHTML="";
+ 
+   barajamaquina.forEach(carta => {
+       cartasmaquina.append(cartavuelta)
+   });
+    
+
+
 
 
 
@@ -156,7 +197,7 @@ const turnoJugador=(event)=>{
 
 if (event.target.nodeName== "IMG") {   
 let valorcarta= event.target.src.substring(38,event.target.src.lastIndexOf("."));
-console.log(valorcarta)
+
 
 
 let carta = document.createElement("IMG");
