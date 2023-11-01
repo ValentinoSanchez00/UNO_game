@@ -162,25 +162,37 @@ carta.src="./assets/imagenes/"+posibilidades[random]+".PNG";
 carta.classList.add("cartas","posicioncartas")
 
 apoyacartas.appendChild(carta)
+
+
   
 let imageneliminar;
-  barajamaquina.forEach(x => {
-   if (x.src == carta.src) {
-       imageneliminar=x
-   }
-  })
+barajamaquina.forEach(x => {
+ if (carta.src.includes(x)) {
+     imageneliminar=x
+ }
+})
+console.log(carta.src)
+console.log(imageneliminar)
   
   console.log(barajamaquina)
+ 
+
+
+
   barajamaquina.splice(barajamaquina.lastIndexOf(imageneliminar),1);
   console.log(barajamaquina)
 
-  let cartavuelta = document.createElement("IMG");
-  cartavuelta.src="./assets/imagenes/cartaUNO.PNG"
-  cartavuelta.classList.add("cartas")
+
+
+
+ 
  
   cartasmaquina.innerHTML="";
  
    barajamaquina.forEach(carta => {
+    let cartavuelta = document.createElement("IMG");
+    cartavuelta.src="./assets/imagenes/cartaUNO.PNG"
+    cartavuelta.classList.add("cartas")
        cartasmaquina.append(cartavuelta)
    });
     
@@ -218,6 +230,7 @@ if (barajajugador.length==7) {
    
    barajajugador.splice(barajajugador.lastIndexOf(imageneliminar),1);
    
+   console.log(imageneliminar)
 
   
   
