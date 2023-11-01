@@ -3,6 +3,7 @@ const cartasmaquina=document.getElementById("cartasmaquina")
 const cartasjugador=document.getElementById("cartasjugador")
 const tablero=document.getElementById("tablero")
 const apoyacartas=document.getElementById("apoyacartas")
+const mazo=document.getElementById("mazo")
 
 const colores=["rojo","amarillo","verde","azul"];
 const numeros=["1","2","3","4","5","6","7","8","9","0","+2","cambiosentido","prohibido","cambiocolor","+4"];
@@ -110,7 +111,7 @@ darcartas();
 
 const turnomaquina=()=>{
 
-const cartamedio=apoyacartas.lastChild.src;
+let cartamedio=apoyacartas.lastChild.src;
 const valorcarta=cartamedio.substring(38,cartamedio.lastIndexOf("."))
 
 //saber los valores del medio
@@ -155,7 +156,11 @@ let posibilidades=[];
 
 
 
-let random=Math.floor(Math.random()*posibilidades.length)
+if (posibilidades.length==0) {
+    cogercartadelmazo("maquina")
+}
+else{
+    let random=Math.floor(Math.random()*posibilidades.length)
 
 let carta = document.createElement("IMG");
 carta.src="./assets/imagenes/"+posibilidades[random]+".PNG";
@@ -195,6 +200,7 @@ console.log(imageneliminar)
     cartavuelta.classList.add("cartas")
        cartasmaquina.append(cartavuelta)
    });
+}
     
 
 
@@ -216,7 +222,85 @@ let carta = document.createElement("IMG");
 carta.src="./assets/imagenes/"+valorcarta+".PNG";
 carta.classList.add("cartas","posicioncartas")
 
+console.log(barajajugador)
 
+if (barajajugador.length<7) {
+    const cartamedio=apoyacartas.lastChild.src;    
+    const valorcartamedio=cartamedio.substring(38,cartamedio.lastIndexOf("."))
+   
+  
+let  color="";
+let numero="";
+
+for (let i = 0; i < valorcartamedio.length; i++) {
+    if (i === 0 && valorcartamedio[i] === "+" && !isNaN(valorcartamedio[i + 1])) {
+        numero = "+" + valorcartamedio[i + 1];
+        color=valorcartamedio.substring(i + 2);
+        i++;
+    } else if (!isNaN(valorcartamedio[i])) {
+        numero = valorcartamedio[i];
+        color = valorcartamedio.substring(i + 1);
+        break; 
+    } else if (valorcartamedio.substring(i, i + 11) === "cambiocolor") {
+        numero = "cambiocolor";
+        color = "";
+        break;
+    } else if (valorcartamedio.substring(i, i + 13) === "cambiosentido") {
+        numero = "cambiodesentido";
+        color = valorcartamedio.substring(i + 13);
+        break;
+    }else if (valorcartamedio.substring(i, i + 9) === "prohibido") {
+        numero = "prohibido";
+        color = valorcartamedio.substring(i + 9);
+        break;
+    }
+}
+console.log(color)
+console.log(numero)
+
+
+
+
+if (event.target.src.includes(color)|| event.target.src.includes(numero)||event.target.src.includes("cambiocolor")||event.target.src.includes("+4")) {
+ 
+
+    apoyacartas.appendChild(carta)
+  
+    let imageneliminar;
+      barajajugador.forEach(x => {
+       if (x.src == carta.src) {
+           imageneliminar=x
+       }
+      })
+      
+      barajajugador.splice(barajajugador.lastIndexOf(imageneliminar),1);
+      
+      console.log(imageneliminar)
+   
+     
+     
+      cartasjugador.innerHTML="";
+     
+       barajajugador.forEach(carta => {
+           cartasjugador.append(carta)
+       });
+
+
+       turnomaquina();
+
+
+
+
+}else{
+    console.log("esta no")
+}
+
+
+
+
+
+
+}
 if (barajajugador.length==7) {
 
    apoyacartas.appendChild(carta)
@@ -240,23 +324,65 @@ if (barajajugador.length==7) {
         cartasjugador.append(carta)
     });
 
+    turnomaquina();
+}
+
+
+
+
+
+
+}
+
+
+}
+
+const cogercartadelmazo=(jugador)=>{
     
+    if (jugador=="usuario") {
+        let random=Math.floor(Math.random()*cartas.length)
+        let carta=document.createElement("IMG")
+        carta.src="./assets/imagenes/"+cartas[random]+ ".PNG"
+        carta.classList.add("cartas")
+        console.log(carta)
+
+        barajajugador.push(carta)
+        cartas.splice(random,1)
+
+
+        cartasjugador.innerHTML="";
+     
+        barajajugador.forEach(cartas => {
+            cartasjugador.append(cartas)
+        });
+ 
+        turnomaquina();
+    }
+    if (jugador=="maquina") {
+        let random=Math.floor(Math.random()*cartas.length)
+
+        barajamaquina.push(cartas[random])
+        cartas.splice(random,1)
+
+
+        cartasjugador.innerHTML="";
+     
+        barajamaquina.forEach(carta => {
+            let cartavuelta = document.createElement("IMG");
+            cartavuelta.src="./assets/imagenes/cartaUNO.PNG"
+            cartavuelta.classList.add("cartas")
+               cartasmaquina.append(cartavuelta)
+           });
+ 
+    }
+   
 }
-
-
-
-
-
-
-}
-turnomaquina();
-
-}
-
-
 
 
 
 
 boton.addEventListener("click",iniciarJuego);
 cartasjugador.addEventListener("click",turnoJugador) 
+mazo.addEventListener("click",()=>{
+    cogercartadelmazo("usuario")
+})
