@@ -4,6 +4,7 @@ const cartasjugador=document.getElementById("cartasjugador")
 const tablero=document.getElementById("tablero")
 const apoyacartas=document.getElementById("apoyacartas")
 const mazo=document.getElementById("mazo")
+const coloreselegir=document.getElementById("colores")
 
 const colores=["rojo","amarillo","verde","azul"];
 const numeros=["1","2","3","4","5","6","7","8","9","0","+2","cambiosentido","prohibido","cambiocolor","+4"];
@@ -15,8 +16,9 @@ const cartas=[];
 
 const barajamaquina=[];
 const barajajugador=[];
-
-
+let  color="";
+let numero="";
+let i=0;
 
 
 
@@ -115,8 +117,6 @@ let cartamedio=apoyacartas.lastChild.src;
 const valorcarta=cartamedio.substring(38,cartamedio.lastIndexOf("."))
 
 //saber los valores del medio
-let  color="";
-let numero="";
 
 for (let i = 0; i < valorcarta.length; i++) {
     if (i === 0 && valorcarta[i] === "+" && !isNaN(valorcarta[i + 1])) {
@@ -142,8 +142,9 @@ for (let i = 0; i < valorcarta.length; i++) {
     }
 }
 
-
-
+console.log("valores de los colores que recibe la maquina")
+console.log(color)
+console.log(numero)
 
 // la maquina esta viendo que posibilidades puede hacer con la carta del medio
 let posibilidades=[];
@@ -158,8 +159,7 @@ let posibilidades=[];
 
 if (posibilidades.length==0) {
     cogercartadelmazo("maquina")
-}
-else{
+}else{
     let random=Math.floor(Math.random()*posibilidades.length)
 
 let carta = document.createElement("IMG");
@@ -176,8 +176,8 @@ barajamaquina.forEach(x => {
      imageneliminar=x
  }
 })
-console.log(carta.src)
-console.log(imageneliminar)
+/* console.log(carta.src)
+console.log(imageneliminar) */
   
   console.log(barajamaquina)
  
@@ -224,18 +224,21 @@ carta.classList.add("cartas","posicioncartas")
 
 console.log(barajajugador)
 
-if (barajajugador.length<7) {
+if (barajajugador.length<7 || i!=0) {
     const cartamedio=apoyacartas.lastChild.src;    
     const valorcartamedio=cartamedio.substring(38,cartamedio.lastIndexOf("."))
    
   
-let  color="";
-let numero="";
+
 
 for (let i = 0; i < valorcartamedio.length; i++) {
     if (i === 0 && valorcartamedio[i] === "+" && !isNaN(valorcartamedio[i + 1])) {
         numero = "+" + valorcartamedio[i + 1];
-        color=valorcartamedio.substring(i + 2);
+
+        if (numero!="+4") {
+            color=valorcartamedio.substring(i + 2);
+        }
+       
         i++;
     } else if (!isNaN(valorcartamedio[i])) {
         numero = valorcartamedio[i];
@@ -243,7 +246,7 @@ for (let i = 0; i < valorcartamedio.length; i++) {
         break; 
     } else if (valorcartamedio.substring(i, i + 11) === "cambiocolor") {
         numero = "cambiocolor";
-        color = "";
+        
         break;
     } else if (valorcartamedio.substring(i, i + 13) === "cambiosentido") {
         numero = "cambiodesentido";
@@ -255,44 +258,85 @@ for (let i = 0; i < valorcartamedio.length; i++) {
         break;
     }
 }
-console.log(color)
-console.log(numero)
 
 
 
+if (color=="") {
+    if (event.target.src.includes(numero)||event.target.src.includes("cambiocolor")||event.target.src.includes("+4")) {
+      /*   if (event.target.src.includes("cambiocolor")) {
+            cambiocolor(jugador)
+        } */
 
-if (event.target.src.includes(color)|| event.target.src.includes(numero)||event.target.src.includes("cambiocolor")||event.target.src.includes("+4")) {
- 
-
-    apoyacartas.appendChild(carta)
-  
-    let imageneliminar;
-      barajajugador.forEach(x => {
-       if (x.src == carta.src) {
-           imageneliminar=x
-       }
-      })
+        apoyacartas.appendChild(carta)
       
-      barajajugador.splice(barajajugador.lastIndexOf(imageneliminar),1);
+        let imageneliminar;
+          barajajugador.forEach(x => {
+           if (x.src == carta.src) {
+               imageneliminar=x
+           }
+          })
+          
+          barajajugador.splice(barajajugador.lastIndexOf(imageneliminar),1);
+          
+          console.log(imageneliminar)
+       
+         
+         
+          cartasjugador.innerHTML="";
+         
+           barajajugador.forEach(carta => {
+               cartasjugador.append(carta)
+           });
+    
+    
+           turnomaquina();
+    
+    
+    
+    
+    }else{
+        console.log("esta no")
+    }
+}
+else{
+    if (event.target.src.includes(color)|| event.target.src.includes(numero)||event.target.src.includes("cambiocolor")||event.target.src.includes("+4")) {
+        /* if (event.target.src.includes("cambiocolor")) {
+            cambiocolor("jugador")
+         } */
+
+        apoyacartas.appendChild(carta)
       
-      console.log(imageneliminar)
-   
-     
-     
-      cartasjugador.innerHTML="";
-     
-       barajajugador.forEach(carta => {
-           cartasjugador.append(carta)
-       });
+        let imageneliminar;
+          barajajugador.forEach(x => {
+           if (x.src == carta.src) {
+               imageneliminar=x
+           }
+          })
+          
+          barajajugador.splice(barajajugador.lastIndexOf(imageneliminar),1);
+          
+          console.log(imageneliminar)
+       
+         
+         
+          cartasjugador.innerHTML="";
+         
+           barajajugador.forEach(carta => {
+               cartasjugador.append(carta)
+           });
+           
 
 
-       turnomaquina();
 
-
-
-
-}else{
-    console.log("esta no")
+    
+           turnomaquina();
+    
+    
+    
+    
+    }else{
+        console.log("esta no")
+    }
 }
 
 
@@ -300,10 +344,12 @@ if (event.target.src.includes(color)|| event.target.src.includes(numero)||event.
 
 
 
-}
-if (barajajugador.length==7) {
 
+
+}
+if (barajajugador.length==7 && i==0) {
    apoyacartas.appendChild(carta)
+ 
   
  let imageneliminar;
    barajajugador.forEach(x => {
@@ -323,6 +369,9 @@ if (barajajugador.length==7) {
     barajajugador.forEach(carta => {
         cartasjugador.append(carta)
     });
+    if (carta.src.includes("cambiocolor")) {
+        cambiocolor("jugador")
+     }
 
     turnomaquina();
 }
@@ -355,7 +404,7 @@ const cogercartadelmazo=(jugador)=>{
         barajajugador.forEach(cartas => {
             cartasjugador.append(cartas)
         });
- 
+        i++;
         turnomaquina();
     }
     if (jugador=="maquina") {
@@ -365,7 +414,7 @@ const cogercartadelmazo=(jugador)=>{
         cartas.splice(random,1)
 
 
-        cartasjugador.innerHTML="";
+        cartasmaquina.innerHTML="";
      
         barajamaquina.forEach(carta => {
             let cartavuelta = document.createElement("IMG");
@@ -378,7 +427,14 @@ const cogercartadelmazo=(jugador)=>{
    
 }
 
+const cambiocolor=(player)=>{
+coloreselegir.style.display="flex";
 
+
+
+
+
+}
 
 
 boton.addEventListener("click",iniciarJuego);
