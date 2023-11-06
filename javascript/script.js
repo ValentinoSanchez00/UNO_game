@@ -263,9 +263,13 @@ for (let i = 0; i < valorcartamedio.length; i++) {
 
 if (color=="") {
     if (event.target.src.includes(numero)||event.target.src.includes("cambiocolor")||event.target.src.includes("+4")) {
-      /*   if (event.target.src.includes("cambiocolor")) {
-            cambiocolor(jugador)
-        } */
+    /*    if (event.target.src.includes("cambiocolor")) {
+        let condicionador=false;
+        while(condicionador){
+            cambiocolor("jugador");
+        }
+            
+        }  */
 
         apoyacartas.appendChild(carta)
       
@@ -300,9 +304,13 @@ if (color=="") {
 }
 else{
     if (event.target.src.includes(color)|| event.target.src.includes(numero)||event.target.src.includes("cambiocolor")||event.target.src.includes("+4")) {
-        /* if (event.target.src.includes("cambiocolor")) {
-            cambiocolor("jugador")
-         } */
+    /*     if (event.target.src.includes("cambiocolor")) {
+            let condicionador=false;
+            while(condicionador){
+                cambiocolor("jugador");
+            }
+                
+            }  */
 
         apoyacartas.appendChild(carta)
       
@@ -429,6 +437,17 @@ const cogercartadelmazo=(jugador)=>{
 
 const cambiocolor=(player)=>{
 coloreselegir.style.display="flex";
+if (player=="jugador") {
+    coloreselegir.addEventListener("click",(event)=>{
+        if (event.target.nodeName=="DIV") {
+            
+            console.log("esta clickando en un color")
+
+
+
+        }
+    })
+}
 
 
 
