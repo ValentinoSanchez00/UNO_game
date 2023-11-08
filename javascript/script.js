@@ -19,6 +19,7 @@ const barajajugador=[];
 let  color="";
 let numero="";
 let i=0;
+let condicionador=false;
 
 
 
@@ -117,30 +118,35 @@ let cartamedio=apoyacartas.lastChild.src;
 const valorcarta=cartamedio.substring(38,cartamedio.lastIndexOf("."))
 
 //saber los valores del medio
-
-for (let i = 0; i < valorcarta.length; i++) {
-    if (i === 0 && valorcarta[i] === "+" && !isNaN(valorcarta[i + 1])) {
-        numero = "+" + valorcarta[i + 1];
-        color=valorcarta.substring(i + 2);
-        i++;
-    } else if (!isNaN(valorcarta[i])) {
-        numero = valorcarta[i];
-        color = valorcarta.substring(i + 1);
-        break; 
-    } else if (valorcarta.substring(i, i + 11) === "cambiocolor") {
-        numero = "cambiocolor";
-        color = "";
-        break;
-    } else if (valorcarta.substring(i, i + 13) === "cambiosentido") {
-        numero = "cambiodesentido";
-        color = valorcarta.substring(i + 13);
-        break;
-    }else if (valorcarta.substring(i, i + 9) === "prohibido") {
-        numero = "prohibido";
-        color = valorcarta.substring(i + 9);
-        break;
+if (condicionador==true) {
+    condicionador=false;
+}
+else{
+    for (let i = 0; i < valorcarta.length; i++) {
+        if (i === 0 && valorcarta[i] === "+" && !isNaN(valorcarta[i + 1])) {
+            numero = "+" + valorcarta[i + 1];
+            color=valorcarta.substring(i + 2);
+            i++;
+        } else if (!isNaN(valorcarta[i])) {
+            numero = valorcarta[i];
+            color = valorcarta.substring(i + 1);
+            break; 
+        } else if (valorcarta.substring(i, i + 11) === "cambiocolor") {
+            numero = "cambiocolor";
+            color = "";
+            break;
+        } else if (valorcarta.substring(i, i + 13) === "cambiosentido") {
+            numero = "cambiodesentido";
+            color = valorcarta.substring(i + 13);
+            break;
+        }else if (valorcarta.substring(i, i + 9) === "prohibido") {
+            numero = "prohibido";
+            color = valorcarta.substring(i + 9);
+            break;
+        }
     }
 }
+
 
 console.log("valores de los colores que recibe la maquina")
 console.log(color)
@@ -211,7 +217,7 @@ console.log(imageneliminar) */
 }
 
 
-const turnoJugador=(event)=>{
+const turnoJugador=async (event)=>{
 
 if (event.target.nodeName== "IMG") {   
 let valorcarta= event.target.src.substring(38,event.target.src.lastIndexOf("."));
@@ -263,14 +269,14 @@ for (let i = 0; i < valorcartamedio.length; i++) {
 
 if (color=="") {
     if (event.target.src.includes(numero)||event.target.src.includes("cambiocolor")||event.target.src.includes("+4")) {
-    /*    if (event.target.src.includes("cambiocolor")) {
-        let condicionador=false;
-        while(condicionador){
-            cambiocolor("jugador");
-        }
+       if (event.target.src.includes("cambiocolor")) {
+       
+        coloreselegir.style.display = "flex";
+          const changecolors= await cambiocolor("jugador");
+        
             
-        }  */
-
+        }  
+ 
         apoyacartas.appendChild(carta)
       
         let imageneliminar;
@@ -304,13 +310,13 @@ if (color=="") {
 }
 else{
     if (event.target.src.includes(color)|| event.target.src.includes(numero)||event.target.src.includes("cambiocolor")||event.target.src.includes("+4")) {
-    /*     if (event.target.src.includes("cambiocolor")) {
-            let condicionador=false;
-            while(condicionador){
-                cambiocolor("jugador");
-            }
-                
-            }  */
+        if (event.target.src.includes("cambiocolor")) {
+       
+            coloreselegir.style.display = "flex";
+            const changecolors= await cambiocolor("jugador");
+          
+              
+          }  
 
         apoyacartas.appendChild(carta)
       
@@ -435,25 +441,48 @@ const cogercartadelmazo=(jugador)=>{
    
 }
 
-const cambiocolor=(player)=>{
-coloreselegir.style.display="flex";
-if (player=="jugador") {
-    coloreselegir.addEventListener("click",(event)=>{
-        if (event.target.nodeName=="DIV") {
-            
-            console.log("esta clickando en un color")
+const cambiocolor = async (player,event) => {
+    return new Promise((resolve) => {
+      
+  
+        if (player == "jugador") {
+            const handleClick = (event) => {
+              if (event.target.nodeName === "DIV") {
+                const classes = event.target.classList;
+                if (classes.contains("rojo")) {
+                  color="rojo"
+                  
+                } else if (classes.contains("verde")) {
+                    color="verde"
+                 
+                } else if (classes.contains("azul")) {
+                  
+                    color="azul"
+
+                } else if (classes.contains("amarillo")) {
+                color="amarillo"
+                
+                }
+                condicionador=true
+                resolve();
+              }
 
 
+            };
+  
+        coloreselegir.addEventListener("click", handleClick);
+      }
+    });
+  };
+  
+  // Uso de la función
+  cambiocolor("jugador").then(() => {
+    console.log("Continuar con el código después del clic.");
+  });
 
-        }
-    })
-}
+  
 
 
-
-
-
-}
 
 
 boton.addEventListener("click",iniciarJuego);
