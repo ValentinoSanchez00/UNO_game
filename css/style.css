@@ -17,12 +17,14 @@
 }
 .cartasmaquina{
     border: 1px solid black;
+    padding: 1rem;
     display: none;
     justify-content: center;
  
 }
 .cartasjugador{
     border: 1px solid black;
+    padding: 1rem;
    display: none;
     
     justify-content: center;
@@ -110,5 +112,20 @@
 }
 .azul{
     background-color: blue;
+}
+.sabercolor{
+    display: none;
+    padding: 1rem;
+    color: black;
+    margin: 1rem;
+    border: 1px solid black;
+    font-size: 3rem;
+}
+.titulofinal{
+    position: absolute;
+    top: 100px;
+    margin: 0 auto;
+    font-size: 5rem;
+    color: black;
 }
 
